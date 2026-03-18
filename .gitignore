@@ -1,23 +1,22 @@
 # Angular specific
-/dist/
-/out-tsc/
-/tmp/
-/coverage/
-/e2e/test-output/
-/.angular/
+/Front__end/dist/
+/Front__end/out-tsc/
+/Front__end/tmp/
+/Front__end/coverage/
+/Front__end/e2e/test-output/
+/Front__end/.angular/
 .angular/
 
 # Node modules and dependency files
-/node_modules/
-/package-lock.json
-/yarn.lock
+/Front__end/node_modules/
+node_modules/
 
 # Environment files
-/.env
+.env
 
 # Angular CLI and build artefacts
-/.angular-cli.json
-/.ng/
+.angular-cli.json
+.ng/
 
 # TypeScript cache
 *.tsbuildinfo
@@ -26,3 +25,31 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# .NET / C# specific
+[Bb]in/
+[Oo]bj/
+[Tt]est[Rr]esults/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.log
+*.sqlite
+*.db
+*.db-journal
+
+# Visual Studio / VS Code
+.vs/
+.vscode/
+*.code-workspace
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini

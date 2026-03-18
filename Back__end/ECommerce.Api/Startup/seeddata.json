@@ -1,0 +1,483 @@
+{
+  "products": [
+    {
+      "id": "100",
+      "name": "Dell Laptop",
+      "price": 50000,
+      "quantity": 1,
+      "imageUrl": "https://www.wb.com.eg/wp-content/uploads/2025/11/1_12_1-300x300.png",
+      "categoryID": "1",
+      "description": "A high-performance laptop suitable for all your computing needs."
+    },
+    {
+      "id": "491",
+      "name": "iPhone",
+      "price": 30000,
+      "quantity": 5,
+      "imageUrl": "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "2",
+      "description": "A sleek smartphone with advanced features."
+    },
+    {
+      "id": "102",
+      "name": "iPad",
+      "price": 25000,
+      "quantity": 2,
+      "imageUrl": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "3",
+      "description": "A versatile tablet for work and play."
+    },
+    {
+      "id": "500",
+      "name": "Samsung Galaxy S25",
+      "price": 45000,
+      "quantity": 4,
+      "imageUrl": "https://i0.wp.com/elhodatell.com/wp-content/uploads/2025/09/Samsung-Galaxy-S25-Plus-256GB-12GB.png?resize=300%2C300&ssl=1",
+      "categoryID": "2",
+      "description": "A powerful smartphone with cutting-edge technology."
+    },
+    {
+      "id": "104",
+      "name": "MacBook Pro",
+      "price": 85000,
+      "quantity": 0,
+      "imageUrl": "https://www.macstoreuk.com/wp-content/uploads/2022/05/MBPro13SilverFront500-300x300.png",
+      "categoryID": "1",
+      "description": "A powerful laptop for professional use."
+    },
+    {
+      "id": "168",
+      "name": "Surface Pro",
+      "price": 75000,
+      "quantity": 2,
+      "imageUrl": "https://gamehub.om/wp-content/uploads/2023/09/microsoft-300x300.jpg",
+      "categoryID": "3",
+      "description": "A versatile 2-in-1 laptop and tablet."
+    },
+    {
+      "id": "763",
+      "name": "Google Pixel",
+      "price": 48999,
+      "quantity": 1,
+      "imageUrl": "https://dakauf.eu/wp-content/uploads/2025/08/GOOGLE-FROST-300x300.png",
+      "categoryID": "2",
+      "description": "A smartphone with the latest Android experience."
+    },
+    {
+      "id": "428",
+      "name": "Lenovo ThinkPad",
+      "price": 60000,
+      "quantity": 3,
+      "imageUrl": "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "1",
+      "description": "A reliable laptop for business professionals."
+    },
+    {
+      "id": "108",
+      "name": "iMac",
+      "price": 120000,
+      "quantity": 0,
+      "imageUrl": "https://images.unsplash.com/photo-1527443195645-1133f7f28990?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "1",
+      "description": "A powerful all-in-one desktop computer."
+    },
+    {
+      "id": "427",
+      "name": "Samsung Galaxy Tab",
+      "price": 35000,
+      "quantity": 4,
+      "imageUrl": "https://images.unsplash.com/photo-1585790050230-5dd28404ccb9?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "3",
+      "description": "A high-performance tablet for entertainment and productivity."
+    },
+    {
+      "id": "593",
+      "name": "Asus ROG Laptop",
+      "price": 95000,
+      "quantity": 1,
+      "imageUrl": "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "1",
+      "description": "A gaming laptop with top-tier performance."
+    },
+    {
+      "id": "469",
+      "name": "OnePlus 9",
+      "price": 39999,
+      "quantity": 5,
+      "imageUrl": "https://oasis.opstatics.com/content/dam/oasis/page/2021/9-series/spec-image/9/Arcticsky_2080a_euna.png",
+      "categoryID": "2",
+      "description": "A flagship smartphone with exceptional speed."
+    },
+    {
+      "id": "320",
+      "name": "Amazon Fire Tablet",
+      "price": 15000,
+      "quantity": 3,
+      "imageUrl": "https://m.media-amazon.com/images/I/51C0eTVt-JL._AC_UF1000,1000_QL80_.jpg",
+      "categoryID": "3",
+      "description": "An affordable tablet for reading and media consumption."
+    },
+    {
+      "id": "711",
+      "name": "HP Spectre x360",
+      "price": 88000,
+      "quantity": 2,
+      "imageUrl": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "1",
+      "description": "A stylish convertible laptop with great features."
+    },
+    {
+      "id": "845",
+      "name": "Sony Xperia 1 III",
+      "price": 69999,
+      "quantity": 1,
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkEuufF9zS2vPeWgG-FRlbVp22BMmcxmEG6g&s",
+      "categoryID": "2",
+      "description": "A premium smartphone with an excellent camera."
+    },
+    {
+      "id": "912",
+      "name": "Microsoft Surface Laptop",
+      "price": 78000,
+      "quantity": 0,
+      "imageUrl": "https://images.unsplash.com/photo-1593642634402-b0eb5e2eebc9?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "1",
+      "description": "A sleek laptop with a vibrant touchscreen."
+    },
+    {
+      "id": "634",
+      "name": "Lenovo Yoga Tablet",
+      "price": 28000,
+      "quantity": 4,
+      "imageUrl": "https://images.unsplash.com/photo-1542751110-97427bbecf20?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "3",
+      "description": "A flexible tablet for work and entertainment."
+    },
+    {
+      "id": "753",
+      "name": "Dell XPS 13",
+      "price": 92000,
+      "quantity": 2,
+      "imageUrl": "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "1",
+      "description": "A compact and powerful laptop for professionals."
+    },
+    {
+      "id": "384",
+      "name": "Huawei MatePad",
+      "price": 32000,
+      "quantity": 3,
+      "imageUrl": "https://images.unsplash.com/photo-1561154464-82e9adf32764?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "3",
+      "description": "A high-quality tablet with a stunning display."
+    },
+    {
+      "id": "275",
+      "name": "Acer Predator Laptop",
+      "price": 97000,
+      "quantity": 1,
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmLIN4ZiUH1yuy-CPr6rgUT83YWdRomG2mXA&s",
+      "categoryID": "1",
+      "description": "A gaming laptop with superior graphics performance."
+    },
+    {
+      "id": "198",
+      "name": "Motorola Edge",
+      "price": 35999,
+      "quantity": 5,
+      "imageUrl": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "2",
+      "description": "A modern smartphone with a powerful processor."
+    },
+    {
+      "id": "567",
+      "name": "Razer Blade 15",
+      "price": 105000,
+      "quantity": 2,
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz2i6vWYAJliRjyutx0aOLbPRPbr_biHsirA&s",
+      "categoryID": "1",
+      "description": "A sleek laptop with a vibrant touchscreen."
+    },
+    {
+      "id": "436",
+      "name": "Nokia T20 Tablet",
+      "price": 22000,
+      "quantity": 4,
+      "imageUrl": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "3",
+      "description": "A flexible tablet for work and entertainment."
+    },
+    {
+      "id": "389",
+      "name": "LG Gram Laptop",
+      "price": 89000,
+      "quantity": 3,
+      "imageUrl": "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "1",
+      "description": "A lightweight laptop with long battery life."
+    },
+    {
+      "id": "910",
+      "name": "Asus ZenBook 14",
+      "price": 83000,
+      "quantity": 4,
+      "imageUrl": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "1",
+      "description": "A stylish ultrabook with powerful performance."
+    },
+    {
+      "id": "359",
+      "name": "Lenovo Tab P11",
+      "price": 27000,
+      "quantity": 5,
+      "imageUrl": "https://images.unsplash.com/photo-1585790050230-5dd28404ccb9?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "3",
+      "description": "A versatile tablet for work and play."
+    },
+    {
+      "id": "1200",
+      "name": "Logitech Mouse",
+      "price": 1500,
+      "quantity": 10,
+      "imageUrl": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "4",
+      "description": "A precision gaming mouse with customizable buttons."
+    },
+    {
+      "id": "1201",
+      "name": "Apple Watch",
+      "price": 20000,
+      "quantity": 5,
+      "imageUrl": "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "5",
+      "description": "A smartwatch with fitness tracking and notifications."
+    },
+    {
+      "id": "1202",
+      "name": "Dell Desktop",
+      "price": 60000,
+      "quantity": 3,
+      "imageUrl": "https://images.unsplash.com/photo-1587831990711-23ca6441447b?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "6",
+      "description": "A powerful desktop computer for home and office use."
+    },
+    {
+      "id": "1203",
+      "name": "Samsung Monitor",
+      "price": 12000,
+      "quantity": 7,
+      "imageUrl": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "7",
+      "description": "A high-resolution monitor for gaming and productivity."
+    },
+    {
+      "id": "1204",
+      "name": "HP Printer",
+      "price": 8000,
+      "quantity": 6,
+      "imageUrl": "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "8",
+      "description": "A reliable printer for home and office use."
+    },
+    {
+      "id": "1205",
+      "name": "Sony Headphones",
+      "price": 3000,
+      "quantity": 15,
+      "imageUrl": "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "4",
+      "description": "Noise-cancelling headphones for immersive sound experience."
+    },
+    {
+      "id": "1206",
+      "name": "Fitbit Charge 5",
+      "price": 9000,
+      "quantity": 8,
+      "imageUrl": "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "5",
+      "description": "A fitness tracker with heart rate monitoring and sleep tracking."
+    },
+    {
+      "id": "1207",
+      "name": "iMac Pro",
+      "price": 200000,
+      "quantity": 2,
+      "imageUrl": "https://images.unsplash.com/photo-1527443195645-1133f7f28990?auto=format&fit=crop&w=600&q=80",
+      "categoryID": "6",
+      "description": "A high-performance all-in-one desktop computer for professionals."
+    },
+    {
+      "id": "1300",
+      "name": "Seagate External HDD",
+      "price": 2500,
+      "quantity": 12,
+      "imageUrl": "https://images-cdn.ubuy.com.sa/65d3bdca5aaae07f6d0879cb-seagate-expansion-desktop-10tb-external.jpg",
+      "categoryID": "9",
+      "description": "A high-capacity external hard drive for data storage."
+    },
+    {
+      "id": "1301",
+      "name": "Samsung Portable SSD",
+      "price": 4500,
+      "quantity": 8,
+      "imageUrl": "https://image-us.samsung.com/SamsungUS/home/computing/01242022/MU-PC500T_006_Dynamic-2_Black.jpg?$product-details-jpg$",
+      "categoryID": "9",
+      "description": "A fast and portable solid-state drive for on-the-go storage."
+    },
+    {
+      "id": "1302",
+      "name": "WD My Passport",
+      "price": 3500,
+      "quantity": 10,
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSV-wO47JbpbQ9ZF9C4abmsOc9pwvU4OTSVJg&s",
+      "categoryID": "9",
+      "description": "A compact external hard drive for easy data backup."
+    },
+    {
+      "id": "1303",
+      "name": "SanDisk Extreme Pro",
+      "price": 4000,
+      "quantity": 7,
+      "imageUrl": "https://shuttershopegypt.com/wp-content/uploads/2025/10/1603897533_1595433.jpg",
+      "categoryID": "9",
+      "description": "A high-speed portable SSD for fast data transfer."
+    },
+    {
+      "id": "1304",
+      "name": "LaCie Rugged Mini",
+      "price": 5000,
+      "quantity": 5,
+      "imageUrl": "https://m.media-amazon.com/images/I/91b27zHQBJL.jpg",
+      "categoryID": "9",
+      "description": "A durable external hard drive for rugged use."
+    },
+    {
+      "id": "1400",
+      "name": "LED HD TV 43 Inch",
+      "price": 13500,
+      "quantity": 6,
+      "imageUrl": "https://f.nooncdn.com/p/pzsku/Z2F02922320043F1D8DA9Z/45/1765448748/f34e26e6-8dd2-4a10-8083-5e0175ba45bf.jpg?width=800",
+      "categoryID": "7",
+      "description": "A high-definition LED TV for an immersive viewing experience."
+    },
+    {
+      "id": "1401",
+      "name": "Arion LED TV 32 Inch HD",
+      "price": 8500,
+      "quantity": 8,
+      "imageUrl": "https://f.nooncdn.com/p/pzsku/ZA8F834074FE78F7ADC81Z/45/1765448770/c44ffa05-3022-438d-bee4-91dba193d496.jpg?width=800",
+      "categoryID": "7",
+      "description": "A high-definition LED TV for an immersive viewing experience."
+    },
+    {
+      "id": "1402",
+      "name": "Arion Frameless LED TV 32 Inch",
+      "price": 9200,
+      "quantity": 5,
+      "imageUrl": "https://f.nooncdn.com/p/pzsku/Z90CA59B1BB36BBE5010BZ/45/1762253523/0bca4ba7-25b8-4de9-83d1-7125749a4c4b.jpg?width=800",
+      "categoryID": "7",
+      "description": "A high-definition LED TV for an immersive viewing experience."
+    },
+    {
+      "id": "1403",
+      "name": "Samsung Smart LED TV 43 Inch Full HD (2025)",
+      "price": 17500,
+      "quantity": 4,
+      "imageUrl": "https://f.nooncdn.com/p/pnsku/N70215105V/45/_/1764242132/f9eb9e31-b6df-4318-9abd-e3ea008d5501.jpg?width=800",
+      "categoryID": "7",
+      "description": "A high-definition LED TV for an immersive viewing experience."
+    },
+    {
+      "id": "1500",
+      "name": "Meta Quest 3S 128GB VR Headset",
+      "price": 28500,
+      "quantity": 5,
+      "imageUrl": "https://f.nooncdn.com/p/pnsku/N70115755V/45/_/1736323634/c3a0bc35-4470-4d67-8be5-00e4a245ab05.jpg?width=800",
+      "categoryID": "8",
+      "description": "Experience immersive virtual reality with the Meta Quest 3S VR Headset."
+    },
+    {
+      "id": "1501",
+      "name": "KIESLECT KR2 Pro Smartwatch AMOLED Display",
+      "price": 6200,
+      "quantity": 10,
+      "imageUrl": "https://f.nooncdn.com/p/pzsku/Z3A4909DE6FFAE2270DBAZ/45/1742301136/4acf4f21-8bd9-475c-8486-bf14f2dfc96a.jpg?width=800",
+      "categoryID": "8",
+      "description": "A stylish smartwatch with AMOLED display and fitness tracking features."
+    },
+    {
+      "id": "1502",
+      "name": "W&O X9 Ultra Series 9 Smartwatch AMOLED",
+      "price": 5400,
+      "quantity": 7,
+      "imageUrl": "https://f.nooncdn.com/p/pzsku/Z5A852F934750F2020DB3Z/45/_/1734618095/4e63411a-bdf6-4c0a-aa05-d069c5761d70.jpg?width=800",
+      "categoryID": "8",
+      "description": "A premium smartwatch with AMOLED display and advanced health features."
+    },
+    {
+      "id": "1503",
+      "name": "Xiaomi Redmi Watch 5 AMOLED 60Hz",
+      "price": 6900,
+      "quantity": 9,
+      "imageUrl": "https://f.nooncdn.com/p/pnsku/N70142229V/45/_/1736571725/047e2213-1429-4107-9eae-8bfb27ac5a72.jpg?width=800",
+      "categoryID": "8",
+      "description": "A feature-rich smartwatch with AMOLED display and 60Hz refresh rate."
+    },
+    {
+      "id": "1504",
+      "name": "Digital Finger Counter & Prayer Reminder Ring",
+      "price": 850,
+      "quantity": 20,
+      "imageUrl": "https://f.nooncdn.com/p/pzsku/Z5FE2BC5891F3A6227140Z/45/1765453203/4eff12df-e24b-4038-9a8a-a9c8a04731e3.jpg?width=800",
+      "categoryID": "8",
+      "description": "A digital finger counter and prayer reminder ring for spiritual practice."
+    },
+    {
+      "id": "1505",
+      "name": "INEIX Replacement Band for Xiaomi Mi Band 5",
+      "price": 250,
+      "quantity": 30,
+      "imageUrl": "https://f.nooncdn.com/p/v1602008772/N40930809A_1.jpg?width=800",
+      "categoryID": "8",
+      "description": "A stylish replacement band for Xiaomi Mi Band 5 fitness tracker."
+    },
+    {
+      "id": "12",
+      "name": "Samsung Galaxy A16 - 4GB RAM - 128GB - Grey",
+      "price": 10398,
+      "quantity": 4,
+      "imageUrl": "https://2b.com.eg/media/catalog/product/cache/661473ab953cdcdf4c3b607144109b90/s/a/samsung-galaxy-a16-grey2-2_1.jpg",
+      "categoryID": "2",
+      "description": "Bring details to life with multi-cameras. Smooth riding with powerful performance."
+    },
+    {
+      "id": "21",
+      "name": "Virtual Reality VR Glasses 3D",
+      "price": 670,
+      "quantity": 7,
+      "imageUrl": "https://f.nooncdn.com/p/pzsku/Z400507AB85D6B63F6761Z/45/1752762234/8d46a083-c2ce-4870-933c-c12be76fd92d.jpg?width=800",
+      "categoryID": "5",
+      "description": "Virtual Reality VR Glasses 3D Glasses with Remote Control and Bluetooth Remote Control."
+    },
+    {
+      "id": "62145703",
+      "name": "Anker Zolo Charger USB-C 20W",
+      "price": 375,
+      "quantity": 12,
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8dGI1py8G31sg38d8c0FlGoHha0xl5hy1jw&s",
+      "categoryID": "4",
+      "description": "Charge Fast in just 10 minutes."
+    }
+  ],
+  "categories": [
+    { "id": "1", "name": "Laptops", "icon": "💻" },
+    { "id": "2", "name": "Mobiles", "icon": "📱" },
+    { "id": "3", "name": "Tablets", "icon": "📱" },
+    { "id": "4", "name": "Accessories", "icon": "🖱️" },
+    { "id": "5", "name": "Wearables", "icon": "⌚" },
+    { "id": "6", "name": "Desktops", "icon": "🖥️" },
+    { "id": "7", "name": "Monitors & TVs", "icon": "🖥️" },
+    { "id": "8", "name": "Smart Devices", "icon": "📟" },
+    { "id": "9", "name": "Storage", "icon": "💾" }
+  ]
+}

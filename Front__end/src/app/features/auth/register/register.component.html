@@ -1,0 +1,54 @@
+<div class="auth-container">
+  <mat-card class="auth-card">
+    <mat-card-header>
+      <mat-card-title>Create Account</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p class="auth-subtitle">Join us and start shopping today</p>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Username</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <input matInput formControlName="username" autocomplete="username" />
+          <mat-error *ngIf="form.get('username')?.hasError('required')">Username is required</mat-error>
+          <mat-error *ngIf="form.get('username')?.hasError('minlength')">Min 3 characters</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input matInput formControlName="email" type="email" autocomplete="email" />
+          <mat-error *ngIf="form.get('email')?.hasError('required')">Email is required</mat-error>
+          <mat-error *ngIf="form.get('email')?.hasError('email')">Enter a valid email</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" autocomplete="new-password" />
+          <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" class="password-toggle" tabindex="-1">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('password')?.hasError('required')">Password is required</mat-error>
+          <mat-error *ngIf="form.get('password')?.hasError('minlength')">Min 6 characters</mat-error>
+        </mat-form-field>
+
+        <div class="password-strength" *ngIf="form.get('password')?.value">
+          <div class="strength-bar">
+            <div class="strength-fill" [style.width.%]="passwordStrength" [ngClass]="passwordStrengthClass"></div>
+          </div>
+          <span class="strength-label" [ngClass]="passwordStrengthClass">{{passwordStrengthLabel}}</span>
+        </div>
+
+        <p class="error-text" *ngIf="error">{{ error }}</p>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="loading" class="full-width auth-submit-btn">
+          <mat-spinner *ngIf="loading" diameter="20" class="btn-spinner"></mat-spinner>
+          <span *ngIf="!loading">Create Account</span>
+          <span *ngIf="loading">Creating account...</span>
+        </button>
+      </form>
+      <p class="register-link">Already have an account? <a routerLink="/login">Sign In</a></p>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,98 @@
+<div class="notification-center">
+  <div class="center-header">
+    <h1>Notifications</h1>
+    <div class="header-actions">
+      <mat-form-field appearance="outline" class="filter-field" subscriptSizing="dynamic">
+        <mat-label>Filter by type</mat-label>
+        <mat-select [(value)]="filterType" (selectionChange)="applyFilter()">
+          <mat-option value="">All</mat-option>
+          <mat-option value="Success">Success</mat-option>
+          <mat-option value="Error">Error</mat-option>
+          <mat-option value="Warning">Warning</mat-option>
+          <mat-option value="Info">Info</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <span class="unread-count" *ngIf="unreadCount > 0">
+        {{unreadCount}} unread
+      </span>
+      <button 
+        mat-icon-button 
+        (click)="markAllAsRead()"
+        [disabled]="unreadCount === 0"
+        matTooltip="Mark all as read">
+        <mat-icon>done_all</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State with Skeletons -->
+  <div *ngIf="loading" class="loading-skeletons">
+    <mat-card *ngFor="let i of [1,2,3,4,5]" class="skeleton-notification-card">
+      <div class="skeleton-content">
+        <div class="skeleton-loader" style="width: 24px; height: 24px; flex-shrink: 0;"></div>
+        <div class="skeleton-text">
+          <div class="skeleton-loader" style="width: 80%; height: 20px; margin-bottom: 8px;"></div>
+          <div class="skeleton-loader" style="width: 40%; height: 16px;"></div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && notifications.length === 0" class="empty-state">
+    <mat-icon>notifications_none</mat-icon>
+    <h2>No Notifications</h2>
+    <p>You're all caught up! Check back later for updates.</p>
+  </div>
+
+  <!-- Notifications List -->
+  <div *ngIf="!loading && notifications.length > 0" class="notifications-list">
+    <mat-card 
+      *ngFor="let n of filteredNotifications; trackBy: trackById"
+      [ngClass]="getNotificationClasses(n)"
+      class="notification-card"
+      (click)="onNotificationClick(n)">
+      
+      <!-- Icon -->
+      <mat-icon class="notification-icon">{{getIconFor(n.type)}}</mat-icon>
+
+      <!-- Content -->
+      <div class="notification-content">
+        <div class="notification-message">{{n.message}}</div>
+        <div class="notification-time">{{n.createdAt | date: 'short'}}</div>
+      </div>
+
+      <!-- Unread Indicator & Actions -->
+      <div class="notification-actions">
+        <span *ngIf="!n.isRead" class="unread-indicator"></span>
+        <button 
+          mat-icon-button 
+          [matMenuTriggerFor]="menu"
+          (click)="$event.stopPropagation()"
+          class="menu-button">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="markAsRead(n.id);" *ngIf="!n.isRead">
+            <mat-icon>done</mat-icon>
+            <span>Mark as Read</span>
+          </button>
+          <button mat-menu-item (click)="delete(n.id);">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Pagination -->
+  <mat-paginator 
+    *ngIf="!loading && totalCount > pageSize"
+    [pageSizeOptions]="[10, 20, 50]"
+    [pageSize]="pageSize"
+    [length]="totalCount"
+    (page)="onPageChange($event)"
+    class="notifications-paginator">
+  </mat-paginator>
+</div>

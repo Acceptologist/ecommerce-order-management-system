@@ -1,0 +1,292 @@
+<div class="checkout-page">
+  <div class="page-header">
+    <h1>Checkout</h1>
+    <button mat-stroked-button routerLink="/cart" class="back-to-cart-btn">
+      <mat-icon>arrow_back</mat-icon>
+      Back to Cart
+    </button>
+  </div>
+
+  <!-- Cart validation: some items out of stock or quantity not available -->
+  <mat-card *ngIf="cartValidation && !cartValidation.valid" class="stock-warning-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon class="warning-icon">warning</mat-icon>
+        Cannot place order — update your cart
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p class="stock-warning-message">
+        Some items are out of stock or the quantity you want is no longer available. You cannot place this order until you remove or reduce these items.
+      </p>
+      <ul class="stock-errors-list">
+        <li *ngFor="let err of cartValidation.errors">
+          <strong>{{ err.productName }}</strong>:
+          <ng-container *ngIf="err.available === 0">out of stock</ng-container>
+          <ng-container *ngIf="err.available > 0">only {{ err.available }} available (you have {{ err.requested }} in cart)</ng-container>
+        </li>
+      </ul>
+      <button mat-raised-button color="warn" routerLink="/cart">
+        <mat-icon>shopping_cart</mat-icon>
+        Update cart
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <div *ngIf="validatingCart" class="validating-cart-message">
+    <mat-spinner diameter="24"></mat-spinner>
+    <span>Checking availability...</span>
+  </div>
+
+  <div class="checkout-layout">
+    <!-- Left: Address Form -->
+    <div class="checkout-form-section">
+      <mat-card class="checkout-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>location_on</mat-icon>
+            Shipping Address
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="form" class="address-form">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Street Address</mat-label>
+              <input matInput formControlName="street" placeholder="123 Main St" />
+              <mat-error *ngIf="form.get('street')?.hasError('required')">Street is required</mat-error>
+            </mat-form-field>
+
+            <div class="city-country-row">
+              <mat-form-field appearance="outline" class="flex-grow">
+                <mat-label>City</mat-label>
+                <input matInput formControlName="city" placeholder="New York" />
+                <mat-error *ngIf="form.get('city')?.hasError('required')">City is required</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="flex-grow">
+                <mat-label>Country</mat-label>
+                <input matInput formControlName="country" placeholder="United States" />
+                <mat-error *ngIf="form.get('country')?.hasError('required')">Country is required</mat-error>
+              </mat-form-field>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Payment Form -->
+      <mat-card class="checkout-card" style="margin-top: 24px;">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>credit_card</mat-icon>
+            Payment Details
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="form" class="address-form">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Cardholder Name</mat-label>
+              <input matInput formControlName="cardHolder" placeholder="John Doe" />
+              <mat-error *ngIf="form.get('cardHolder')?.hasError('required')">Name is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Card Number</mat-label>
+              <input matInput formControlName="cardNumber" placeholder="0000 0000 0000 0000" maxlength="16" />
+              <mat-error *ngIf="form.get('cardNumber')?.hasError('required')">Card number is required</mat-error>
+              <mat-error *ngIf="form.get('cardNumber')?.hasError('minlength')">Must be 16 digits</mat-error>
+            </mat-form-field>
+
+            <div class="city-country-row">
+              <mat-form-field appearance="outline" class="flex-grow">
+                <mat-label>Expiration (MM/YY)</mat-label>
+                <input matInput formControlName="expiration" placeholder="12/25" />
+                <mat-error *ngIf="form.get('expiration')?.hasError('required')">Expiration is required</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="flex-grow">
+                <mat-label>CVV</mat-label>
+                <input matInput formControlName="cvv" placeholder="123" maxlength="4" type="password" />
+                <mat-error *ngIf="form.get('cvv')?.hasError('required')">CVV is required</mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Processing State -->
+            <div *ngIf="loading" class="processing-panel">
+              <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+              <p class="processing-message">{{processingMessage}}</p>
+              <div class="processing-steps">
+                <div class="processing-step" [class.active]="processingStage === 'payment' || processingStage === 'order' || processingStage === 'done'">
+                  <mat-icon>credit_card</mat-icon>
+                  <span>Payment</span>
+                </div>
+                <div class="processing-step" [class.active]="processingStage === 'order' || processingStage === 'done'">
+                  <mat-icon>receipt_long</mat-icon>
+                  <span>Order</span>
+                </div>
+                <div class="processing-step" [class.active]="processingStage === 'done'">
+                  <mat-icon>check_circle</mat-icon>
+                  <span>Complete</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div *ngIf="!loading" class="form-actions">
+              <button 
+                mat-raised-button 
+                color="primary" 
+                type="button"
+                (click)="submit()"
+                [disabled]="!canPlaceOrder || form.invalid || items.length === 0"
+                class="place-order-button">
+                <mat-icon>shopping_bag</mat-icon>
+                Place Order ({{total | currency}})
+              </button>
+              <button 
+                mat-stroked-button 
+                color="primary"
+                routerLink="/cart"
+                type="button"
+                class="continue-button">
+                <mat-icon>arrow_back</mat-icon>
+                Continue Shopping
+              </button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Order Items Review -->
+      <mat-card class="items-review-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>receipt_long</mat-icon>
+            Order Items
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item *ngFor="let item of items; let last = last" [ngClass]="{'last-item': last}">
+              <img matListAvatar [src]="item.product.imageUrl" [alt]="item.product.name" class="item-image" />
+              <div matLine class="item-name">{{item.product.name}}</div>
+              <div matLine class="item-quantity">Qty: {{item.quantity}}</div>
+              <span class="spacer"></span>
+              <span class="item-price">{{item.product.price * item.quantity | currency}}</span>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Right: Order Summary (Sticky) -->
+    <div class="order-summary-section">
+      <mat-card class="summary-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>summarize</mat-icon>
+            Order Summary
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <!-- Items Summary -->
+          <div class="summary-items">
+            <div *ngFor="let item of items" class="summary-item">
+              <span class="item-name">{{item.product.name}} x {{item.quantity}}</span>
+              <span class="item-subtotal">{{item.product.price * item.quantity | currency}}</span>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <!-- Subtotal -->
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span class="value">{{subtotal | currency}}</span>
+          </div>
+
+          <!-- Discount -->
+          <div *ngIf="discount > 0" class="summary-row discount-row">
+            <span>Total Discount</span>
+            <span class="value">-{{discount | currency}}</span>
+          </div>
+
+          <!-- Shipping -->
+          <div class="summary-row">
+            <span>
+              <mat-icon class="shipping-icon">local_shipping</mat-icon>
+              Shipping
+            </span>
+            <span>Free</span>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <!-- Total -->
+          <div class="summary-total">
+            <span>TOTAL</span>
+            <span>{{total | currency}}</span>
+          </div>
+
+          <!-- Security Info -->
+          <div class="security-info">
+            <mat-icon>lock</mat-icon>
+            <span>Secure SSL encrypted checkout</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Action Buttons -->
+      <mat-card class="summary-actions-card">
+        <mat-card-content>
+          <button 
+            mat-raised-button 
+            color="primary" 
+            class="checkout-button"
+            [disabled]="!canPlaceOrder || form.invalid || items.length === 0"
+            (click)="submit()">
+            <mat-icon>payment</mat-icon>
+            Place Order
+          </button>
+
+          <button 
+            mat-stroked-button 
+            color="primary" 
+            routerLink="/products" 
+            class="continue-shopping-button">
+            <mat-icon>shopping_bag</mat-icon>
+            Continue Shopping
+          </button>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Benefits -->
+      <mat-card class="benefits-card">
+        <mat-card-content>
+          <div class="benefit">
+            <mat-icon>local_shipping</mat-icon>
+            <div>
+              <strong>Free Shipping</strong>
+              <p>On orders over $100</p>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="benefit">
+            <mat-icon>verified</mat-icon>
+            <div>
+              <strong>Secure Checkout</strong>
+              <p>100% secure payment</p>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="benefit">
+            <mat-icon>undo</mat-icon>
+            <div>
+              <strong>30-Day Returns</strong>
+              <p>Easy returns policy</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

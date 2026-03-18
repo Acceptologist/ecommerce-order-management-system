@@ -1,0 +1,18 @@
+<div class="toast-container">
+  <div *ngFor="let toast of toasts; trackBy: trackById"
+       [ngClass]="'toast-' + toast.type.toLowerCase()"
+       class="toast"
+       [@slideInOut]>
+    <div class="toast-content">
+      <mat-icon class="toast-icon">{{getToastIcon(toast.type)}}</mat-icon>
+      <span class="toast-message">{{toast.message}}</span>
+    </div>
+    <button 
+      mat-icon-button 
+      class="toast-close"
+      (click)="dismiss(toast.id)"
+      [attr.aria-label]="'Close ' + toast.type">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>

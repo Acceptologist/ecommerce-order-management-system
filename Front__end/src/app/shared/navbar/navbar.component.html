@@ -1,0 +1,72 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="menuToggle.emit()" class="menu-button" aria-label="Toggle menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <a [routerLink]="auth.isLoggedIn && auth.isAdmin ? '/dashboard' : '/products'" class="brand">
+    <mat-icon class="brand-icon">storefront</mat-icon>
+    <span class="brand-name">ShopHub</span>
+  </a>
+
+  <span class="spacer"></span>
+
+  <nav class="nav-links hide-on-mobile" *ngIf="auth.isLoggedIn">
+    <a mat-button routerLink="/products" routerLinkActive="active-link">Products</a>
+    <a mat-button routerLink="/orders" routerLinkActive="active-link">Orders</a>
+  </nav>
+
+  <span class="spacer"></span>
+
+  <button mat-icon-button (click)="toggleTheme()" class="toolbar-btn" [matTooltip]="isDark ? 'Light mode' : 'Dark mode'">
+    <mat-icon>{{isDark ? 'light_mode' : 'dark_mode'}}</mat-icon>
+  </button>
+
+  <button mat-icon-button [routerLink]="['/cart']" matTooltip="Cart" class="toolbar-btn">
+    <mat-icon [matBadge]="cart.totalCount()" matBadgeColor="warn" [matBadgeHidden]="cart.totalCount() === 0" matBadgeSize="small">shopping_cart</mat-icon>
+  </button>
+
+  <button mat-icon-button [routerLink]="['/notifications']" *ngIf="auth.isLoggedIn" matTooltip="Notifications" class="toolbar-btn">
+    <mat-icon [matBadge]="(unreadCount$ | async) || 0" matBadgeColor="accent" [matBadgeHidden]="(unreadCount$ | async) === 0" matBadgeSize="small">notifications</mat-icon>
+  </button>
+
+  <ng-container *ngIf="!auth.isLoggedIn">
+    <a mat-button routerLink="/login" class="auth-link">
+      <mat-icon>login</mat-icon>
+      <span class="hide-on-mobile">Login</span>
+    </a>
+    <a mat-raised-button routerLink="/register" class="register-btn">
+      Get Started
+    </a>
+  </ng-container>
+
+  <ng-container *ngIf="auth.isLoggedIn">
+    <button mat-button [matMenuTriggerFor]="userMenu" class="user-menu-btn">
+      <div class="user-avatar">{{auth.currentUser?.username?.charAt(0)?.toUpperCase()}}</div>
+      <span class="hide-on-mobile">{{auth.currentUser?.username}}</span>
+      <mat-icon>expand_more</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu" class="user-dropdown">
+      <div class="menu-header" mat-menu-item disabled>
+        <strong>{{auth.currentUser?.username}}</strong>
+        <span *ngIf="auth.isAdmin" class="role-chip">Admin</span>
+      </div>
+      <mat-divider></mat-divider>
+      <button mat-menu-item routerLink="/dashboard" *ngIf="auth.isAdmin">
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+      </button>
+      <button mat-menu-item routerLink="/orders">
+        <mat-icon>receipt_long</mat-icon>
+        <span *ngIf="auth.isAdmin">Orders</span>
+        <span *ngIf="!auth.isAdmin">My Orders</span>
+      </button>
+
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()" class="logout-btn">
+        <mat-icon>logout</mat-icon>
+        <span>Sign Out</span>
+      </button>
+    </mat-menu>
+    <span *ngIf="auth.isAdmin" class="admin-badge hide-on-mobile">Admin</span>
+  </ng-container>
+</mat-toolbar>

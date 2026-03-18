@@ -1,0 +1,186 @@
+<div class="cart-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1>Shopping Cart</h1>
+    <button mat-stroked-button routerLink="/products" class="continue-shopping-btn">
+      <mat-icon>arrow_back</mat-icon>
+      Continue Shopping
+    </button>
+  </div>
+
+  <!-- Empty Cart State -->
+  <div *ngIf="cart.items().length === 0" class="empty-cart">
+    <div class="empty-state">
+      <mat-icon>shopping_bag</mat-icon>
+      <h2>Your Cart is Empty</h2>
+      <p>Looks like you haven't added any items to your cart yet.</p>
+      <button mat-raised-button color="primary" routerLink="/products">
+        <mat-icon>shopping_bag</mat-icon>
+        Start Shopping
+      </button>
+    </div>
+  </div>
+
+  <!-- Cart with Items -->
+  <div *ngIf="cart.items().length > 0" class="cart-layout">
+    <!-- Left: Items Table -->
+    <div class="cart-items-section">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            {{cart.items().length}} {{cart.items().length === 1 ? 'Item' : 'Items'}} in Cart
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <table class="cart-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of cart.items(); trackBy: trackByProductId" class="cart-row">
+                <td class="image-cell">
+                  <img class="cart-image" [src]="item.product.imageUrl || 'assets/images/placeholder.png'" [alt]="item.product.name" loading="lazy" />
+                </td>
+                <td class="name-cell">
+                  <span class="product-name">{{item.product.name}}</span>
+                </td>
+                <td class="price-cell">
+                  <div *ngIf="item.product.discountRate > 0; else noDiscount">
+                    <span style="text-decoration: line-through; color: #888; font-size: 0.85em;">{{item.product.price | currency}}</span>
+                    <br/>
+                    {{item.product.price * (1 - item.product.discountRate / 100) | currency}}
+                  </div>
+                  <ng-template #noDiscount>
+                    {{item.product.price | currency}}
+                  </ng-template>
+                </td>
+                <td class="quantity-cell">
+                  <mat-form-field appearance="outline" class="qty-form">
+                    <input 
+                      matInput 
+                      type="number" 
+                      [value]="item.quantity"
+                      min="1"
+                      [max]="item.product.stockQuantity"
+                      (change)="updateQuantity(item.product.id, +$any($event.target).value)" />
+                  </mat-form-field>
+                </td>
+                <td class="subtotal-cell">
+                  {{item.product.price * (1 - (item.product.discountRate || 0) / 100) * item.quantity | currency}}
+                </td>
+                <td class="action-cell">
+                  <button 
+                    mat-icon-button 
+                    color="warn"
+                    (click)="removeItem(item.product.id)"
+                    matTooltip="Remove from cart">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Right: Order Summary (Sticky) -->
+    <div class="order-summary-section">
+      <mat-card class="summary-card">
+        <mat-card-header>
+          <mat-card-title>Order Summary</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <!-- Items in Summary -->
+          <div class="summary-items">
+            <div *ngFor="let item of cart.items()" class="summary-item">
+              <span class="item-name">{{item.product.name}} × {{item.quantity}}</span>
+              <span class="item-price">{{item.product.price * (1 - (item.product.discountRate || 0) / 100) * item.quantity | currency}}</span>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <!-- Subtotal -->
+          <div class="summary-item summary-row">
+            <span>Subtotal</span>
+            <span>{{cart.subtotal() | currency}}</span>
+          </div>
+
+          <!-- Discount -->
+          <div *ngIf="cart.discount() > 0" class="summary-item summary-row discount-row">
+            <span>Total Discount</span>
+            <span class="discount-value">-{{cart.discount() | currency}}</span>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <!-- Total -->
+          <div class="summary-item summary-total">
+            <span>Total</span>
+            <span>{{cart.total() | currency}}</span>
+          </div>
+
+          <!-- Checkout Button -->
+          <button 
+            mat-raised-button 
+            color="primary" 
+            class="checkout-button"
+            (click)="checkout()">
+            <mat-icon>payment</mat-icon>
+            Proceed to Checkout
+          </button>
+
+          <!-- Continue Shopping -->
+          <div class="d-grid mt-3 mb-3">
+            <button 
+              mat-stroked-button 
+              color="primary" 
+              routerLink="/products"
+              class="continue-shopping-button">
+              <mat-icon class="me-1">shopping_bag</mat-icon>
+              Continue Shopping
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Benefits Card -->
+      <mat-card class="benefits-card">
+        <mat-card-content>
+          <div class="benefit">
+            <mat-icon>local_shipping</mat-icon>
+            <div>
+              <strong>Free Shipping</strong>
+              <p>On orders over $100</p>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="benefit">
+            <mat-icon>verified</mat-icon>
+            <div>
+              <strong>Secure Checkout</strong>
+              <p>100% secure payment</p>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="benefit">
+            <mat-icon>undo</mat-icon>
+            <div>
+              <strong>30-Day Returns</strong>
+              <p>Easy returns policy</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+

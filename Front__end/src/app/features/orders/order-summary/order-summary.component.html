@@ -1,0 +1,165 @@
+<div *ngIf="order" class="summary-container">
+  <button mat-icon-button class="back-btn" routerLink="/orders" matTooltip="Back to Orders">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  <!-- Order tracking -->
+  <div *ngIf="isCancelled" class="order-cancelled-banner">
+    <mat-icon>cancel</mat-icon>
+    <div>
+      <div class="title">Order Cancelled</div>
+      <div class="subtitle">This order has been cancelled and will not be delivered.</div>
+    </div>
+  </div>
+
+  <div *ngIf="!isCancelled" class="order-progress">
+    <div class="progress-line">
+      <div class="progress-fill" [ngClass]="'step-' + currentStep"></div>
+    </div>
+
+    <div class="steps">
+      <div class="step" [ngClass]="{ completed: isStepCompleted(1), current: isStepCurrent(1) }">
+        <div class="circle">
+          <span *ngIf="isStepCompleted(1); else s1">&#10003;</span>
+          <ng-template #s1>1</ng-template>
+        </div>
+        <div class="label">Ordered</div>
+      </div>
+
+      <div class="step" [ngClass]="{ completed: isStepCompleted(2), current: isStepCurrent(2) }">
+        <div class="circle">
+          <span *ngIf="isStepCompleted(2); else s2">&#10003;</span>
+          <ng-template #s2>2</ng-template>
+        </div>
+        <div class="label">Preparing</div>
+      </div>
+
+      <div class="step" [ngClass]="{ completed: isStepCompleted(3), current: isStepCurrent(3) }">
+        <div class="circle">
+          <span *ngIf="isStepCompleted(3); else s3">&#10003;</span>
+          <ng-template #s3>3</ng-template>
+        </div>
+        <div class="label">Shipped</div>
+      </div>
+
+      <div class="step" [ngClass]="{ completed: isStepCompleted(4), current: isStepCurrent(4) }">
+        <div class="circle">
+          <span *ngIf="isStepCompleted(4); else s4">&#10003;</span>
+          <ng-template #s4>4</ng-template>
+        </div>
+        <div class="label">Delivered</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="left-area">
+    <!-- Order Details Card -->
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Order #{{ order.id }}</mat-card-title>
+        <mat-card-subtitle>{{ order.orderDate | date:'medium' }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-chip [ngClass]="'status-chip ' + (order.status | lowercase)" [color]="statusColor(order.status)" selected>
+          {{ order.status }}
+        </mat-chip>
+
+        <!-- Shipping Address -->
+        <div *ngIf="order.address" class="address-block">
+          <strong>Ship to:</strong>
+          <p>
+            {{ order.address.street }}<br>
+            {{ order.address.city }}, {{ order.address.country }}
+          </p>
+        </div>
+
+        <!-- Order Items Table -->
+        <h3 style="margin-top: 24px; margin-bottom: 12px; font-size: 1rem;">Order Items</h3>
+        <table mat-table [dataSource]="order.items" class="full-width">
+          <ng-container matColumnDef="product">
+            <th mat-header-cell *matHeaderCellDef>Product</th>
+            <td mat-cell *matCellDef="let i">{{ i.productName }}</td>
+          </ng-container>
+          <ng-container matColumnDef="qty">
+            <th mat-header-cell *matHeaderCellDef>Qty</th>
+            <td mat-cell *matCellDef="let i">{{ i.quantity }}</td>
+          </ng-container>
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef>Price Each</th>
+            <td mat-cell *matCellDef="let i">
+              <div *ngIf="i.discountAtPurchase > 0; else noDiscount">
+                <span style="text-decoration: line-through; color: #888; font-size: 0.85em;">{{ i.priceAtPurchase | currency }}</span>
+                <br/>
+                {{ i.priceAtPurchase * (1 - i.discountAtPurchase / 100) | currency }}
+              </div>
+              <ng-template #noDiscount>
+                {{ i.priceAtPurchase | currency }}
+              </ng-template>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="subtotal">
+            <th mat-header-cell *matHeaderCellDef>Subtotal</th>
+            <td mat-cell *matCellDef="let i">{{ (i.priceAtPurchase * (1 - (i.discountAtPurchase || 0) / 100) * i.quantity) | currency }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="['product','qty','price','subtotal']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['product','qty','price','subtotal']"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Order Summary Sidebar -->
+  <div class="right-area">
+    <mat-card class="order-summary-card">
+      <mat-card-header>
+        <mat-card-title>Order Summary</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Items Breakdown -->
+        <div class="summary-item" *ngFor="let i of order.items">
+          <span>{{ i.productName }} x {{ i.quantity }}</span>
+          <span>{{ (i.priceAtPurchase * (1 - (i.discountAtPurchase || 0) / 100) * i.quantity) | currency }}</span>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Subtotal (if provided) -->
+        <div class="summary-item" *ngIf="order.subtotal != null && order.subtotal !== order.totalAmount">
+          <span>Subtotal</span>
+          <span>{{ order.subtotal | currency }}</span>
+        </div>
+
+        <!-- Discount -->
+        <div class="summary-item discount" *ngIf="order.discountApplied > 0">
+          <span>{{ order.discountDescription || 'Product Discounts' }}</span>
+          <span>-{{ order.discountApplied | currency }}</span>
+        </div>
+
+        <!-- Total -->
+        <div class="summary-item total">
+          <strong>Total Amount</strong>
+          <strong>{{ order.totalAmount | currency }}</strong>
+        </div>
+
+        <!-- ETA -->
+        <div class="summary-item eta" *ngIf="order.estimatedDeliveryDate">
+          <span>Estimated delivery</span>
+          <span>{{ order.estimatedDeliveryDate | date:'mediumDate' }}</span>
+        </div>
+
+        <!-- Order Status Info -->
+        <mat-divider style="margin: 16px 0;"></mat-divider>
+        <div style="font-size: 0.85rem; color: #757575; text-align: center;">
+          <p style="margin: 8px 0;">
+            <mat-icon style="font-size: 18px; width: 18px; height: 18px; vertical-align: middle; margin-right: 4px;">verified_user</mat-icon>
+            Order Secured
+          </p>
+          <p style="margin: 8px 0;">
+            <mat-icon style="font-size: 18px; width: 18px; height: 18px; vertical-align: middle; margin-right: 4px;">undo</mat-icon>
+            30-Day Returns
+          </p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

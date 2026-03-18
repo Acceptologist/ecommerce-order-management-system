@@ -1,0 +1,81 @@
+<div class="form-page">
+  <button mat-icon-button routerLink="/products" class="back-btn" matTooltip="Back to Products">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  <div class="page-header">
+    <h1>{{ isEdit ? 'Edit Product' : 'New Product' }}</h1>
+    <p class="form-subtitle">{{ isEdit ? 'Update the product details below' : 'Fill in the details to create a new product' }}</p>
+  </div>
+
+  <mat-card class="form-card">
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="submit()" class="product-form">
+        <div class="form-grid">
+          <mat-form-field appearance="outline" class="full-width span-2">
+            <mat-label>Product Name</mat-label>
+            <mat-icon matPrefix>label</mat-icon>
+            <input matInput formControlName="name" placeholder="Enter product name" />
+            <mat-error>Name is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width span-2">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" rows="3" placeholder="Enter product description"></textarea>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width span-2">
+            <mat-label>Image URL</mat-label>
+            <mat-icon matPrefix>image</mat-icon>
+            <input matInput formControlName="imageUrl" placeholder="https://..." />
+            <mat-error *ngIf="imageUrlControl?.hasError('pattern')">Enter a valid URL</mat-error>
+            <mat-error *ngIf="imageUrlControl?.hasError('maxlength')">Max 500 characters</mat-error>
+          </mat-form-field>
+
+          <div class="image-preview" *ngIf="imageUrlControl?.value && !imageUrlControl?.hasError('pattern')">
+            <img [src]="imageUrlControl?.value" alt="Preview" (error)="onImageError($event)" />
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Price</mat-label>
+            <mat-icon matPrefix>attach_money</mat-icon>
+            <input matInput type="number" formControlName="price" step="0.01" min="0" />
+            <mat-error>Price must be greater than 0</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Discount Rate (%)</mat-label>
+            <mat-icon matPrefix>percent</mat-icon>
+            <input matInput type="number" formControlName="discountRate" step="1" min="0" max="100" />
+            <mat-error>Discount must be between 0 and 100</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Stock Quantity</mat-label>
+            <mat-icon matPrefix>inventory</mat-icon>
+            <input matInput type="number" formControlName="stockQuantity" min="0" />
+            <mat-error>Stock quantity is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width span-2">
+            <mat-label>Category</mat-label>
+            <mat-icon matPrefix>category</mat-icon>
+            <mat-select formControlName="categoryId">
+              <mat-option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</mat-option>
+            </mat-select>
+            <mat-error>Category is required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions">
+          <button mat-stroked-button type="button" routerLink="/products">Cancel</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading" class="submit-btn">
+            <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+            <mat-icon *ngIf="!loading">{{ isEdit ? 'save' : 'add' }}</mat-icon>
+            {{ loading ? 'Saving...' : (isEdit ? 'Update Product' : 'Create Product') }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,39 @@
+<div class="auth-container">
+  <mat-card class="auth-card">
+    <mat-card-header>
+      <mat-card-title>Welcome Back</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p class="auth-subtitle">Sign in to your account to continue</p>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Username</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <input matInput formControlName="username" autocomplete="username" />
+          <mat-error *ngIf="form.get('username')?.hasError('required')">Username is required</mat-error>
+          <mat-error *ngIf="form.get('username')?.hasError('minlength')">Min 3 characters</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" autocomplete="current-password" />
+          <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" class="password-toggle" tabindex="-1">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('password')?.hasError('required')">Password is required</mat-error>
+          <mat-error *ngIf="form.get('password')?.hasError('minlength')">Min 6 characters</mat-error>
+        </mat-form-field>
+
+        <p class="error-text" *ngIf="error">{{ error }}</p>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="loading" class="full-width auth-submit-btn">
+          <mat-spinner *ngIf="loading" diameter="20" class="btn-spinner"></mat-spinner>
+          <span *ngIf="!loading">Sign In</span>
+          <span *ngIf="loading">Signing in...</span>
+        </button>
+      </form>
+      <p class="register-link">Don't have an account? <a routerLink="/register">Create one</a></p>
+    </mat-card-content>
+  </mat-card>
+</div>

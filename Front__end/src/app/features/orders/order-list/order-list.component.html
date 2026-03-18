@@ -1,0 +1,142 @@
+<h1>{{ isAdmin ? 'All Orders' : 'My Orders' }}</h1>
+
+<!-- Filters Section -->
+<div class="filters-container" *ngIf="!loading">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Search by Order # or Customer</mat-label>
+    <mat-icon matPrefix>search</mat-icon>
+    <input matInput [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange($event)" placeholder="e.g. 123 or John">
+    <button mat-icon-button matSuffix *ngIf="searchQuery" (click)="searchQuery=''; onSearchChange('')" aria-label="Clear">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="date-filter">
+    <mat-label>Date Range</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+      <input matStartDate placeholder="Start date" [(ngModel)]="startDate" (ngModelChange)="applyFilters()">
+      <input matEndDate placeholder="End date" [(ngModel)]="endDate" (ngModelChange)="applyFilters()">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="status-filter">
+    <mat-label>Filter by Status</mat-label>
+    <mat-select [(ngModel)]="filterStatus" (ngModelChange)="onStatusFilterChange($event)">
+      <mat-option value="">All Statuses</mat-option>
+      <mat-option value="Pending">Pending</mat-option>
+      <mat-option value="Processing">Processing</mat-option>
+      <mat-option value="Shipped">Shipped</mat-option>
+      <mat-option value="Completed">Completed</mat-option>
+      <mat-option value="Cancelled">Cancelled</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<!-- Loading Skeleton -->
+<div *ngIf="loading" class="loading-skeleton">
+  <table class="mat-elevation-z1 full-width">
+    <thead>
+      <tr>
+        <th>Order #</th>
+        <th>Date</th>
+        <th>Items</th>
+        <th>Ship To</th>
+        <th>Total</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let i of [1,2,3,4,5]">
+        <td><div class="skeleton-loader" style="width: 60px; height: 24px;"></div></td>
+        <td><div class="skeleton-loader" style="width: 120px; height: 24px;"></div></td>
+        <td><div class="skeleton-loader" style="width: 110px; height: 24px;"></div></td>
+        <td><div class="skeleton-loader" style="width: 120px; height: 24px;"></div></td>
+        <td><div class="skeleton-loader" style="width: 80px; height: 24px;"></div></td>
+        <td><div class="skeleton-loader" style="width: 90px; height: 24px;"></div></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Empty State -->
+<div *ngIf="!loading && totalCount === 0 && !searchQuery && !filterStatus && !startDate && !endDate" class="empty-state">
+  <mat-icon>receipt_long</mat-icon>
+  <p>No orders yet</p>
+  <a mat-raised-button color="primary" routerLink="/products">Start Shopping</a>
+</div>
+
+<div *ngIf="!loading && totalCount === 0 && (searchQuery || filterStatus || startDate || endDate)" class="empty-state">
+  <mat-icon>search_off</mat-icon>
+  <p>No orders match your filters.</p>
+  <button mat-button color="primary" (click)="clearFilters()">Clear Filters</button>
+</div>
+
+<!-- Orders Table -->
+<div [hidden]="loading && totalCount === 0" class="orders-table-container">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z1 full-width" matSort (matSortChange)="sortChange($event)">
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Order #</th>
+      <td mat-cell *matCellDef="let o"><a [routerLink]="['/orders', o.id]">{{o.id}}</a></td>
+    </ng-container>
+
+    <ng-container matColumnDef="customer">
+      <th mat-header-cell *matHeaderCellDef>Customer</th>
+      <td mat-cell *matCellDef="let o">{{ o.userName || (o.userId != null ? 'User #' + o.userId : '—') }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+      <td mat-cell *matCellDef="let o">{{o.orderDate | date:'mediumDate'}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="items">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Items</th>
+      <td mat-cell *matCellDef="let o">
+        {{o.itemsCount}} items ({{o.itemsQuantity}} qty)
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="shipTo">
+      <th mat-header-cell *matHeaderCellDef>Ship To</th>
+      <td mat-cell *matCellDef="let o">
+        {{o.address ? (o.address.city + ', ' + o.address.country) : 'No address'}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="total">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
+      <td mat-cell *matCellDef="let o">{{o.totalAmount | currency}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+      <td mat-cell *matCellDef="let o">
+        <mat-chip [ngClass]="'status-chip ' + o.status.toLowerCase()" [color]="statusColor(o.status)" selected>
+          {{o.status}}
+        </mat-chip>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let o" (click)="$event.stopPropagation()">
+        <button 
+          mat-stroked-button 
+          color="warn" 
+          *ngIf="isAdmin && canCancel(o)"
+          (click)="cancelOrder(o, $event)"
+          matTooltip="Cancel order">
+          Cancel
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns" class="order-row" [routerLink]="['/orders', row.id]"></tr>
+  </table>
+  
+  <mat-paginator [length]="totalCount" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons aria-label="Select page of orders" (page)="onPageChange()"></mat-paginator>
+</div>

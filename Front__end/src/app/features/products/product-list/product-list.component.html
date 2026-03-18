@@ -1,0 +1,279 @@
+<div class="page-header">
+  <h1>Products</h1>
+  <div class="header-actions">
+    <mat-form-field appearance="outline" class="flex-grow">
+      <mat-label>Search products</mat-label>
+      <input matInput [formControl]="searchCtrl" placeholder="Search by name..." />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="category-filter">
+      <mat-label>Category</mat-label>
+      <mat-select [(value)]="selectedCategory" (selectionChange)="load()">
+        <mat-option [value]="null">All Categories</mat-option>
+        <mat-option *ngFor="let cat of categories" [value]="cat.id">{{cat.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="sort-field">
+      <mat-label>Sort by</mat-label>
+      <mat-select [(value)]="sortBy" (selectionChange)="load()" aria-label="Sort products">
+        <mat-option value="">None</mat-option>
+        <mat-option value="name">Name</mat-option>
+        <mat-option value="price">Price</mat-option>
+        <mat-option value="stock">Stock</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-icon-button (click)="toggleSortDirection(); load()" [matTooltip]="desc ? 'Descending' : 'Ascending'" aria-label="Toggle sort direction">
+      <mat-icon>{{ desc ? 'arrow_downward' : 'arrow_upward' }}</mat-icon>
+    </button>
+
+    <div class="view-toggle">
+      <button 
+        mat-icon-button 
+        [color]="viewMode === 'table' ? 'primary' : ''"
+        (click)="toggleView('table')"
+        matTooltip="Table View">
+        <mat-icon>table_chart</mat-icon>
+      </button>
+      <button 
+        mat-icon-button 
+        [color]="viewMode === 'grid' ? 'primary' : ''"
+        (click)="toggleView('grid')"
+        matTooltip="Grid View">
+        <mat-icon>view_module</mat-icon>
+      </button>
+    </div>
+
+    <!-- Admin: New Product Button -->
+    <button 
+      mat-raised-button 
+      color="primary" 
+      routerLink="/products/new"
+      *ngIf="auth.isAdmin"
+      class="admin-button">
+      <mat-icon>add</mat-icon>
+      New Product
+    </button>
+  </div>
+</div>
+
+<!-- Loading State with Skeletons -->
+<div *ngIf="loading" class="loading-state">
+  <div [ngSwitch]="viewMode">
+    <!-- Table View Loading Skeleton -->
+    <div *ngSwitchCase="'table'" class="table-container">
+      <table class="mat-elevation-z1">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let i of [1,2,3,4,5]">
+            <td><div class="skeleton-loader" style="width: 40px; height: 40px;"></div></td>
+            <td><div class="skeleton-loader" style="width: 120px;"></div></td>
+            <td><div class="skeleton-loader" style="width: 100px;"></div></td>
+            <td><div class="skeleton-loader" style="width: 80px;"></div></td>
+            <td><div class="skeleton-loader" style="width: 80px;"></div></td>
+            <td><div class="skeleton-loader" style="width: 100px;"></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Grid View Loading Skeleton -->
+    <div *ngSwitchCase="'grid'" class="product-grid">
+      <mat-card *ngFor="let i of [1,2,3,4,5,6]" class="product-card skeleton-card">
+        <div class="skeleton-image"></div>
+        <mat-card-content class="skeleton-content">
+          <div class="skeleton-loader" style="width: 85%; height: 20px; margin-bottom: 8px;"></div>
+          <div class="skeleton-loader" style="width: 60%; height: 16px; margin-bottom: 8px;"></div>
+          <div class="skeleton-loader" style="width: 50%; height: 20px;"></div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+<!-- Table View -->
+<div *ngIf="!loading && viewMode === 'table'" class="table-container">
+  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSortChange($event)" class="mat-elevation-z1">
+
+    <!-- Image Column -->
+    <ng-container matColumnDef="image">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let p">
+        <img class="thumb" [src]="getProductImage(p)" [alt]="p.name" loading="lazy" />
+      </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+      <td mat-cell *matCellDef="let p" [routerLink]="['/products', p.id]" class="name-cell">
+        {{p.name}}
+      </td>
+    </ng-container>
+
+    <!-- Category Column -->
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+      <td mat-cell *matCellDef="let p">{{p.categoryName}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+      <td mat-cell *matCellDef="let p">
+        <div *ngIf="p.discountRate > 0; else noDiscount">
+          <span class="original-price">{{p.price | currency}}</span>
+          <br/>
+          <strong>{{ (p.price * (1 - p.discountRate / 100)) | currency }}</strong>
+          <span class="discount-badge">-{{p.discountRate}}%</span>
+        </div>
+        <ng-template #noDiscount>
+          <strong>{{p.price | currency}}</strong>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <!-- Stock Column -->
+    <ng-container matColumnDef="stock">
+      <th mat-header-cell *matHeaderCellDef>Stock</th>
+      <td mat-cell *matCellDef="let p">
+        <span [ngClass]="getStockClass(p.stockQuantity)">
+          {{p.stockQuantity}} {{p.stockQuantity === 1 ? 'item' : 'items'}}
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let p" class="actions-cell">
+        <button 
+          mat-icon-button 
+          color="primary"
+          [routerLink]="['/products', p.id]"
+          matTooltip="View Details">
+          <mat-icon>info</mat-icon>
+        </button>
+        <button 
+          mat-icon-button 
+          color="accent"
+          (click)="addToCart(p)"
+          [disabled]="p.stockQuantity === 0"
+          matTooltip="Add to Cart">
+          <mat-icon>add_shopping_cart</mat-icon>
+        </button>
+        <!-- Admin: Edit Button -->
+        <button 
+          mat-icon-button 
+          color="accent"
+          [routerLink]="['/products', p.id, 'edit']"
+          *ngIf="auth.isAdmin"
+          matTooltip="Edit Product">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <!-- Admin: Delete Button -->
+        <button 
+          mat-icon-button 
+          color="warn"
+          (click)="deleteProduct(p)"
+          *ngIf="auth.isAdmin"
+          matTooltip="Delete Product">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns" class="product-row"></tr>
+  </table>
+</div>
+
+<!-- Grid View -->
+<div *ngIf="!loading && viewMode === 'grid'" class="product-grid">
+  <mat-card *ngFor="let p of products" class="product-card">
+    <div class="product-image-wrapper">
+      <img mat-card-image [src]="getProductImage(p)" [alt]="p.name" loading="lazy" />
+      <span *ngIf="p.stockQuantity === 0" class="out-of-stock-badge">Out of Stock</span>
+      <span *ngIf="p.stockQuantity > 0 && p.stockQuantity < 5" class="low-stock-badge">Low Stock</span>
+    </div>
+
+    <mat-card-content>
+      <h2 class="product-name">{{p.name}}</h2>
+      <p class="category-badge">{{p.categoryName}}</p>
+      <div class="price-container">
+        <p class="price" *ngIf="!p.discountRate">{{p.price | currency}}</p>
+        <div *ngIf="p.discountRate > 0">
+          <p class="price discounted">{{ (p.price * (1 - p.discountRate / 100)) | currency }}</p>
+          <p class="original-price-inline">{{p.price | currency}} <span class="discount-badge">-{{p.discountRate}}%</span></p>
+        </div>
+      </div>
+      <p class="stock" [ngClass]="getStockClass(p.stockQuantity)">
+        {{p.stockQuantity}} {{p.stockQuantity === 1 ? 'item' : 'items'}} available
+      </p>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button 
+        mat-stroked-button 
+        color="primary"
+        [routerLink]="['/products', p.id]"
+        class="full-width">
+        Details
+      </button>
+      <button 
+        mat-raised-button 
+        color="accent"
+        (click)="addToCart(p)"
+        [disabled]="p.stockQuantity === 0"
+        class="full-width">
+        <mat-icon>add_shopping_cart</mat-icon>
+        Add
+      </button>
+      <!-- Admin: Edit Button in Grid -->
+      <button 
+        mat-icon-button 
+        color="accent"
+        [routerLink]="['/products', p.id, 'edit']"
+        *ngIf="auth.isAdmin"
+        matTooltip="Edit Product">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <!-- Admin: Delete Button in Grid -->
+      <button 
+        mat-icon-button 
+        color="warn"
+        (click)="deleteProduct(p)"
+        *ngIf="auth.isAdmin"
+        matTooltip="Delete Product">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<!-- Paginator (Shared for both views) -->
+<mat-paginator
+  *ngIf="!loading && totalCount > 0"
+  [length]="totalCount"
+  [pageSize]="pageSize"
+  [pageIndex]="page - 1"
+  [pageSizeOptions]="[5, 10, 20]"
+  (page)="onPageChange($event)"
+  showFirstLastButtons>
+</mat-paginator>
+
+<!-- Empty State -->
+<div *ngIf="!loading && products.length === 0" class="empty-state">
+  <mat-icon>shopping_bag</mat-icon>
+  <h2>No Products Found</h2>
+  <p>Try adjusting your search or filters</p>
+</div>

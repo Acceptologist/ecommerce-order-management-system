@@ -1,0 +1,197 @@
+:host {
+  display: block;
+  padding: 24px 16px;
+  max-width: 1400px;
+  margin: 0 auto;
+  animation: fadeInPage .4s ease-out;
+
+  h1 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 24px;
+    letter-spacing: -.5px;
+  }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    text-align: center;
+
+    mat-icon {
+      font-size: 72px;
+      width: 72px;
+      height: 72px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      opacity: .4;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+  }
+
+  .orders-table-container {
+    overflow-x: auto;
+    border-radius: 16px;
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-card);
+    background: var(--surface);
+
+    table {
+      min-width: 100%;
+
+      th {
+        background: var(--table-header);
+        padding: 14px 16px;
+        text-align: left;
+        font-weight: 600;
+        font-size: .8rem;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        color: var(--text);
+        border-bottom: 2px solid var(--border);
+        white-space: nowrap;
+      }
+
+      td {
+        padding: 14px 16px;
+        color: var(--text);
+        border-bottom: 1px solid var(--border-light);
+        font-size: .95rem;
+
+        a {
+          color: var(--primary);
+          text-decoration: none;
+          font-weight: 600;
+          &:hover { text-decoration: underline; }
+        }
+      }
+    }
+
+    .order-row {
+      cursor: pointer;
+      transition: background 150ms ease;
+      &:hover { background: var(--surface-hover); }
+      &:last-child td { border-bottom: none; }
+
+      .status-chip {
+        &.pending {
+          background-color: #fef3c7 !important;
+          color: #92400e !important;
+        }
+        &.completed {
+          background-color: #d1fae5 !important;
+          color: #065f46 !important;
+        }
+        &.cancelled {
+          background-color: #fee2e2 !important;
+          color: #991b1b !important;
+        }
+      }
+    }
+  }
+
+  html[data-theme='dark'] & .orders-table-container {
+    th { color: #f1f5f9; }
+    td { color: #e2e8f0; }
+    td a { color: #93c5fd; }
+    .order-row .status-chip {
+      &.pending { background-color: rgba(245,158,11,.25) !important; color: #fcd34d !important; }
+      &.completed { background-color: rgba(16,185,129,.25) !important; color: #6ee7b7 !important; }
+      &.cancelled { background-color: rgba(239,68,68,.25) !important; color: #fca5a5 !important; }
+    }
+  }
+
+  .filters-container {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+
+  .search-field {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .date-filter {
+    width: 280px;
+  }
+
+  .status-filter {
+    width: 200px;
+  }
+
+  mat-form-field {
+    margin-bottom: -1.25em; /* Remove bottom margin space for mat-form-field */
+  }
+}
+
+.loading-skeleton {
+    overflow-x: auto;
+    border-radius: 16px;
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-card);
+    background: var(--surface);
+
+    table {
+      min-width: 100%;
+      border-collapse: collapse;
+
+      thead tr {
+        background: var(--table-header);
+        border-bottom: 2px solid var(--border);
+      }
+
+      th {
+        padding: 14px 16px;
+        text-align: left;
+        font-weight: 600;
+        font-size: .8rem;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        color: var(--text-secondary);
+      }
+
+      tbody tr {
+        border-bottom: 1px solid var(--border-light);
+        td { padding: 14px 16px; height: 56px; }
+      }
+    }
+  }
+
+  .skeleton-loader {
+    background: linear-gradient(90deg, var(--skeleton-base) 25%, var(--skeleton-shine) 50%, var(--skeleton-base) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  @keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  @media (max-width: 768px) {
+    padding: 16px;
+    h1 { font-size: 1.5rem; }
+    .orders-table-container table th, .orders-table-container table td { padding: 12px; font-size: .85rem; }
+  }
+
+  @media (max-width: 600px) {
+    padding: 12px;
+    h1 { font-size: 1.25rem; margin-bottom: 16px; }
+  }
+}
+
+@keyframes fadeInPage {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

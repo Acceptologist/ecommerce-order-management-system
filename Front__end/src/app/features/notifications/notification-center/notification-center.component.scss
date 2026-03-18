@@ -1,0 +1,233 @@
+:host {
+  display: block;
+  animation: fadeInPage .4s ease-out;
+}
+
+.notification-center {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.center-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  gap: 16px;
+
+  h1 {
+    margin: 0;
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -.5px;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .unread-count {
+    background: linear-gradient(135deg, #f43f5e, #e11d48);
+    color: white;
+    padding: 4px 14px;
+    border-radius: 9999px;
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .3px;
+  }
+}
+
+.skeleton-loader {
+  background: linear-gradient(90deg, var(--skeleton-base) 25%, var(--skeleton-shine) 50%, var(--skeleton-base) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.loading-skeletons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skeleton-notification-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+
+  .skeleton-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    width: 100%;
+    .skeleton-text { flex: 1; }
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  text-align: center;
+  padding: 48px 24px;
+
+  mat-icon {
+    font-size: 80px;
+    width: 80px;
+    height: 80px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    opacity: .4;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 8px;
+    color: var(--text);
+  }
+
+  p {
+    color: var(--text-secondary);
+    margin: 0;
+  }
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.notification-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 12px;
+  border-left: 4px solid transparent;
+  cursor: pointer;
+  transition: all 200ms ease;
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+
+  &:hover {
+    box-shadow: var(--shadow-elevated);
+    transform: translateX(3px);
+  }
+
+  &.unread {
+    background: var(--primary-50);
+    border-color: var(--primary);
+  }
+
+  &.notification-success {
+    border-left-color: #10b981;
+    .notification-icon { color: #10b981; }
+  }
+
+  &.notification-error {
+    border-left-color: #ef4444;
+    .notification-icon { color: #ef4444; }
+  }
+
+  &.notification-warning {
+    border-left-color: #f59e0b;
+    .notification-icon { color: #f59e0b; }
+  }
+
+  &.notification-info {
+    border-left-color: #3b82f6;
+    .notification-icon { color: #3b82f6; }
+  }
+}
+
+.notification-icon {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.notification-content { flex: 1; }
+
+.notification-message {
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.notification-time {
+  font-size: .8rem;
+  color: var(--text-secondary);
+}
+
+.notification-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.unread-indicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f43f5e, #e11d48);
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(244,63,94,.4);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(244,63,94,.4); }
+  50% { box-shadow: 0 0 16px rgba(244,63,94,.6); }
+}
+
+.menu-button {
+  padding: 4px;
+  margin: -4px -8px -4px 0;
+}
+
+.notifications-paginator {
+  background: var(--surface) !important;
+  border-top: 1px solid var(--border-light);
+  margin-top: 24px;
+  border-radius: 0 0 12px 12px;
+}
+
+@media (max-width: 600px) {
+  .notification-center { padding: 12px; }
+  .center-header {
+    flex-direction: column;
+    align-items: flex-start;
+    h1 { width: 100%; }
+  }
+  .notification-card { gap: 10px; padding: 12px; }
+}
+
+@keyframes fadeInPage {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
