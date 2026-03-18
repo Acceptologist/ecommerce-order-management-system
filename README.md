@@ -74,13 +74,13 @@ Refer to the **API Endpoints** section below for a complete list of available AP
 
 ### UI Features & Best Practices
 
-- **Angular Signals**: Utilized modern Angular Signals (e.g., in `CartService`) for reactive, glitch-free state management and computed properties.
-- **Environment Variables**: All configuration values, API URLs, and keys are strictly managed via environment files (`environment.ts`).
+
 - **Real-time Order Tracking**: The order summary page features a live progress bar that updates instantly via WebSockets when the backend advances the order status.
 - **Live Notifications**: The notification center updates in real-time. Unread badges and toast messages appear instantly without page reloads.
 - **Responsive Design**: Fully responsive layout using modern CSS Grid/Flexbox and SCSS variables.
 - **Clean Code**: Unnecessary files and boilerplate have been meticulously removed to ensure maximum readability for code reviewers.
-
+- **Angular Signals**: Utilized modern Angular Signals (e.g., in `CartService`) for reactive, glitch-free state management and computed properties.
+- **Environment Variables**: All configuration values, API URLs, and keys are strictly managed via environment files (`environment.ts`).
 ---
 
 ## 🚀 Order Management Flow
