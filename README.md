@@ -56,10 +56,6 @@ E-Commerce/
 - **Historical Pricing & Discounts**: Order items snapshot the exact price and discount at the time of purchase. Changing a product's price or discount later will not affect historical orders.
 - **Real-time Notifications**: SignalR pushes live updates to connected clients for order status changes and stock deductions.
 
-### Key Endpoints
-
-Refer to the **API Endpoints** section below for a complete list of available API routes.
-
 ---
 
 ## 💻 Frontend – Angular 19
